@@ -1,0 +1,196 @@
+---
+title: "Lab1"
+author: "Ruben osornio"
+date: "`r Sys.Date()`"
+output: html_document
+ 
+---
+Task 1
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r Task 1 }
+getwd()
+
+```
+
+Task 2
+
+```{r Task 2 }
+
+ddt <- read.csv("DDT.csv")
+head(ddt)
+```
+Task 3
+
+The qualitative variables in ddt are river and species.
+
+The quantitative variables in ddt are mile, length, weight, and DDT.
+
+Theres 3 types of species in the dataset which are CCATFISH, LMBASS, SMBUFFALO
+```{r Task 3 }
+
+# LMBASS with WEIGHT > 800
+subset(ddt, SPECIES == "LMBASS" & WEIGHT > 800)
+
+# RIVER is SCM and DDT > 4.0
+subset(ddt, RIVER == "SCM" & DDT > 4.0)
+
+```
+
+Task 4
+ 
+Q1
+```{r}
+mean_length <- mean(ddt$LENGTH, na.rm = TRUE)
+mean_length
+
+
+
+
+```
+
+Q2
+
+```{r}
+sd_weight <- sd(ddt$WEIGHT, na.rm = TRUE)
+round(sd_weight, 2)
+```
+
+
+Q3
+
+```{r}
+plot(LENGTH ~ WEIGHT, data = ddt, col = "red")
+
+```
+
+
+Answer: 0
+
+Q4
+
+```{r}
+
+v <- 1:20
+tail(v/20, 1)   
+
+```
+
+
+TASK 5 
+
+```{r}
+## Task 5 — tables and barplots
+
+
+
+# 1) Table of rivers
+river_tab <- table(ddt$RIVER)
+river_tab
+
+# 2) Color-coded barplot of rivers
+barplot(
+  river_tab,
+  col = rainbow(length(river_tab)),
+  main = "Fish counts by River",
+  xlab = "River",
+  ylab = "Count"
+)
+
+# 3) Table of rivers crossed with species
+riv_species <- table(ddt$RIVER, ddt$SPECIES)   # rows: RIVER, cols: SPECIES
+riv_species
+
+# 4) Barplot of rivers crossed with species (grouped bars + legend)
+cols <- rainbow(nrow(riv_species))
+barplot(
+  riv_species,
+  beside = TRUE,                 # grouped bars (set FALSE for stacked)
+  col = cols,
+  main = "Counts: River × Species",
+  xlab = "Species",
+  ylab = "Count"
+)
+legend("topright", legend = rownames(riv_species), fill = cols, bty = "n", cex = 0.8)
+
+```
+
+TASK 6
+
+```{r}
+pie(table(ddt$SPECIES), main = "Fish Species")
+
+pie(table(ddt$RIVER), main = "Rivers")
+
+
+```
+
+
+TASK 7
+
+```{r}
+## Task 7 — Boxplot of DDT
+boxplot(ddt$DDT, main = "DDT", ylab = "DDT")
+
+## Task 7 — Boxplot of WEIGHT
+boxplot(ddt$WEIGHT, main = "WEIGHT", ylab = "WEIGHT")
+
+## Task 7 — Boxplot of LENGTH
+boxplot(ddt$LENGTH, main = "LENGTH", ylab = "LENGTH")
+
+```
+
+
+Task 8
+
+```{r}
+
+ddt$RIVER <- factor(ddt$RIVER)
+
+coplot(LENGTH ~ WEIGHT | RIVER,
+       data = ddt,
+       number = 1, overlap = 0,
+       xlab = "WEIGHT", ylab = "LENGTH",
+       main = "LENGTH vs WEIGHT by RIVER")
+
+
+ddt$SPECIES <- factor(ddt$SPECIES)
+coplot(DDT ~ WEIGHT | SPECIES,
+       data = ddt,
+       number = 1, overlap = 0,
+       xlab = "WEIGHT", ylab = "DDT",
+       main = "DDT vs WEIGHT by SPECIES")
+
+
+```
+
+
+TASK 9
+
+```{r}
+library(ggplot2)
+
+ggplot(ddt, aes(x = SPECIES, y = WEIGHT, fill = RIVER)) +
+  geom_boxplot() +
+  ggtitle("Ruben Oso") +
+  xlab("SPECIES") +
+  ylab("WEIGHT")
+
+ggplot(ddt, aes(x = RIVER, y = LENGTH, fill = SPECIES)) +
+  geom_violin(position = "dodge") +
+  ggtitle("Ruben Oso") +
+  xlab("RIVER") +
+  ylab("LENGTH")
+
+
+ggplot(ddt, aes(x = WEIGHT, y = LENGTH, color = SPECIES)) +
+  geom_point() +
+  ggtitle("Ruben Oso") +
+  xlab("WEIGHT") +
+  ylab("LENGTH")
+```
+
+
