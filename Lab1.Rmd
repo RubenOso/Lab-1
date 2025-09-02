@@ -3,7 +3,6 @@ title: "Lab1"
 author: "Ruben osornio"
 date: "`r Sys.Date()`"
 output: html_document
- 
 ---
 Task 1
 
